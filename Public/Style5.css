@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/lofi.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative; 
+    overflow: hidden; 
+}
+
+ul {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    padding-top: 30px;
+    padding-right: 50px;
+    list-style: none;
+    z-index: 100; 
+}
+
+ul li {
+     margin-left: 40px;
+     font-size: 17px; 
+}
+
+ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    transition: .2s ease;
+}
+
+ul li a:hover {
+    color: #703a0d;
+}
+
+
+.wrapper {
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: #422214;
+    border-radius: 10px;
+    padding: 30px 40px;
+}
+
+.wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 100%; 
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: #d89664;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #613a1b;
+    padding: 0 45px 0 25px; 
+}
+
+
+.input-box select {
+    width: 100%;
+    height: 100%;
+    background: #d89664;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #613a1b;
+    padding: 0 45px 0 50px; 
+    cursor: pointer;
+    caret-color: #713519;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.input-box .left-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #623321;
+}
+
+.input-box  .right-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: #623321;
+    pointer-events: none;
+}
+
+.input-box input::placeholder {
+    color: #623321;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #623321;
+}
+
+.wrapper .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.remember-forgot label input {
+    accent-color: #895939;
+    margin-right: 3px;
+}
+
+.remember-forgot a {
+    color: #d89664;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.wrapper .btn {
+    width: 100%;
+    height: 45px;
+    background: #f89c4d;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #422214;
+    font-weight: 600;
+    justify-content: space-between;
+    transition: background 0.1s ease;
+
+}
+
+.wrapper .btn:hover {
+    background: #e08332;
+}
+
+.register-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.register-link p a {
+    color: #b47348;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link p a:hover {
+    text-decoration: underline;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #45260c; 
+    box-shadow: 0 0 0px 1000px #ffc99f inset; 
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.wrapper .summary-box {
+    height: 120px; 
+    margin: 30px 0;
+}
+
+.summary-box textarea {
+    width: 100%;
+    height: 100%;
+    background: #d89664;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 20px; 
+    font-size: 16px;
+    color: #613a1b;
+    padding: 15px 45px 15px 25px; 
+    resize: none; 
+}
+
+.summary-box i {
+    top: 25px;
+    transform: translateY(-50%);
+}
