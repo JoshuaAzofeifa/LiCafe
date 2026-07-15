@@ -30,12 +30,15 @@
             <button type="submit" class="btn">Login</button>
 
             <div class="register-link"> 
-                <p> Dont have an account? <a href="/signup">Sign-up</a></p>
+                <p> Dont have an account? <a href="index3.html">Sign-up</a></p>
             </div>
         </form>
     </div>
 
     <script>
+
+        const API_BASE_URL = 'https://your-backend-app.onrender.com';
+
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
             event.preventDefault(); 
 
@@ -43,7 +46,8 @@
             const password = document.getElementById('loginPassword').value;
 
             try {
-                const response = await fetch('/api/login', {
+               
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -53,7 +57,8 @@
 
                 if (response.ok) {
                     alert("Welcome back, " + data.user.username + "!");
-                    window.location.href = '/'; 
+                 
+                    window.location.href = 'index.html'; 
                 } else {
                     alert("Error: " + data.error);
                 }
