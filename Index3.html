@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign-Up</title>
-    <link rel="stylesheet" href="/style3.css">
+    <link rel="stylesheet" href="style3.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -30,12 +30,15 @@
             <button type="submit" class="btn">Sign-up</button>
 
             <div class="register-link"> 
-                <p> Already have an account? <a href="Index2.html">Login</a></p>
+                <p> Already have an account? <a href="index2.html">Login</a></p>
             </div>
         </form>
     </div>
 
     <script>
+     
+        const API_BASE_URL = 'https://your-backend-app.onrender.com'; 
+
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -44,7 +47,8 @@
             const password = document.getElementById('regPassword').value;
 
             try {
-                const response = await fetch('/api/register', {
+             
+                const response = await fetch(`${API_BASE_URL}/api/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, email, password })
@@ -54,7 +58,8 @@
 
                 if (response.ok) {
                     alert("Account created successfully!");
-                    window.location.href = '/login';
+                    
+                    window.location.href = 'index2.html';
                 } else {
                     alert("Error: " + data.error);
                 }
