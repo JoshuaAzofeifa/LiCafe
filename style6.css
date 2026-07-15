@@ -1,1 +1,105 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a120b; /* Deep cozy brown */
+  color: #f5f0bb;
+  margin: 0;
+  padding: 0;
+}
 
+/* The Scrollable Grid Container */
+.scroll-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 40px auto; /* Adds a nice breathing room below your homepage navbar */
+  padding: 0 20px;
+}
+
+/* Individual Option Cards */
+.card {
+  background: rgba(60, 42, 33, 0.85);
+  border-radius: 12px;
+  border: 1px solid rgba(229, 137, 10, 0.3);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Subtle hover effect as you scroll through options */
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #e5890a;
+}
+
+.genre-tag {
+  background: #e5890a;
+  color: #1a120b;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  align-self: flex-start;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  margin: 0 0 5px 0;
+  color: #e5890a;
+  font-size: 22px;
+}
+
+.card .author {
+  font-style: italic;
+  font-size: 13px;
+  color: #a4907c;
+  margin-bottom: 15px;
+}
+
+.card .summary {
+  color: #d5cca1;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.read-btn {
+  background: #e5890a;
+  color: white;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.vote-container {
+  display: flex;
+  gap: 10px;
+}
+
+.vote-btn {
+  background: transparent;
+  border: 1px solid #a4907c;
+  color: #f5f0bb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vote-btn:hover {
+  background: #e5890a;
+  color: white;
+  border-color: #e5890a;
+}
