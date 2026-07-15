@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS literature (
     writer_id INT,
     Genre ENUM('Poetry', 'Drama', 'Novel', 'Short story', 'Essay', 'Fiction', 'Theatre') NOT NULL,
     publication_date DATE,
-    Summary VARCHAR(500) NOT NULL, 
-    pdf_url VARCHAR(255) NOT NULL,
+    Summary VARCHAR(255) NOT NULL, 
+    pdf_url VARCHAR(512) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (writer_id) REFERENCES users(id) ON DELETE CASCADE
 );
