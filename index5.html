@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publish</title>
-    <link rel="stylesheet" href="/style5.css">
+    <link rel="stylesheet" href="style5.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -26,7 +26,7 @@
                     <option value="Short story">Short story</option>
                     <option value="Essay">Essay</option>
                     <option value="Fiction">Fiction</option>
-                     <option value="Theatre">Theatre</option>
+                    <option value="Theatre">Theatre</option>
                 </select>
                 <i class='bx bxs-tag-alt left-icon'></i>
                 <span class="input-box">
@@ -35,7 +35,7 @@
             </div>
 
             <div class="input-box">
-                <input type="file" id="regFile" accept=".pdf" required style="padding: 10px 45px 0 25px;">
+                <input type="file" id="regFile" accept=".pdf" required>
                 <i class="bx bxs-file-pdf"></i>
             </div>
             
@@ -51,10 +51,16 @@
     <div class="menu">
         <ul>
             <li><a href="index.html">Home</a></li>
+            <li><a href="index2.html">Login</a></li>
+            <li><a href="index5.html">Publish</a></li>
+            <li><a href="shelf.html">Shelf</a></li>
         </ul>
     </div> 
 
     <script>
+        // Replace this with your actual hosted backend API URL
+        const API_BASE_URL = 'https://your-backend-app.onrender.com';
+
         document.getElementById('registerForm').addEventListener('submit', async function(event) {
             event.preventDefault();
             
@@ -63,7 +69,7 @@
             const summary = document.getElementById('regSummary').value;
 
             try {
-                const response = await fetch('/api/publish', {
+                const response = await fetch(`${API_BASE_URL}/api/publish`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
