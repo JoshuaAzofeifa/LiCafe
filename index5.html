@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publish</title>
-    <link rel="stylesheet" href="/style5.css">
+    <link rel="stylesheet" href="style5.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -26,7 +26,7 @@
                     <option value="Short story">Short story</option>
                     <option value="Essay">Essay</option>
                     <option value="Fiction">Fiction</option>
-                     <option value="Theatre">Theatre</option>
+                    <option value="Theatre">Theatre</option>
                 </select>
                 <i class='bx bxs-tag-alt left-icon'></i>
                 <span class="input-box">
@@ -35,55 +35,10 @@
             </div>
 
             <div class="input-box">
-                <input type="file" id="regFile" accept=".pdf" required style="padding: 10px 45px 0 25px;">
+                <input type="file" id="regFile" accept=".pdf" required>
                 <i class="bx bxs-file-pdf"></i>
             </div>
             
             <div class="input-box summary-box">
                 <textarea id="regSummary" placeholder="Please create a summary" required></textarea>
-                <i class='bx bx-edit-alt'></i>
-            </div>
-
-            <button type="submit" class="btn">Publish</button>
-        </form>
-    </div>
-
-    <div class="menu">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-        </ul>
-    </div> 
-
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const title = document.getElementById('regTitle').value;
-            const genre = document.getElementById('litGenre').value;
-            const summary = document.getElementById('regSummary').value;
-
-            try {
-                const response = await fetch('/api/publish', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ title, genre, summary })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    alert(`"${title}" has been successfully added to your shelf!`);
-                    this.reset(); 
-                } else {
-                    alert(`Failed to publish: ${data.error || 'Unknown error'}`);
-                }
-            } catch (error) {
-                console.error("Network Error:", error);
-                alert("Could not connect to the database server. Make sure your backend is running!");
-            }
-        });
-    </script>
-</body>
-</html>
+                <i class='
