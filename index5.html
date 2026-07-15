@@ -1,247 +1,89 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publish</title>
+    <link rel="stylesheet" href="/style5.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="wrapper">
+        <form id="registerForm" enctype="multipart/form-data">
+            <h1>Add to the shelf</h1>
+            
+            <div class="input-box">
+                <input type="text" id="regTitle" placeholder=" Title of your work" required>
+                <i class="bx bx-book"></i>
+            </div>
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-}
+            <div class="input-box">
+                <select id="litGenre" required>
+                    <option value="" disabled selected hidden>Select Category</option>
+                    <option value="Poetry">Poetry</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Novel">Novel</option>
+                    <option value="Short story">Short story</option>
+                    <option value="Essay">Essay</option>
+                    <option value="Fiction">Fiction</option>
+                     <option value="Theatre">Theatre</option>
+                </select>
+                <i class='bx bxs-tag-alt left-icon'></i>
+                <span class="input-box">
+                    <i class='bx bx-chevron-down right-icon'></i>
+                </span>
+            </div>
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: url('/lofi.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    position: relative; 
-    overflow: hidden; 
-}
+            <div class="input-box">
+                <input type="file" id="regFile" accept=".pdf" required style="padding: 10px 45px 0 25px;">
+                <i class="bx bxs-file-pdf"></i>
+            </div>
+            
+            <div class="input-box summary-box">
+                <textarea id="regSummary" placeholder="Please create a summary" required></textarea>
+                <i class='bx bx-edit-alt'></i>
+            </div>
 
-ul {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    padding-top: 30px;
-    padding-right: 50px;
-    list-style: none;
-    z-index: 100; 
-}
+            <button type="submit" class="btn">Publish</button>
+        </form>
+    </div>
 
-ul li {
-     margin-left: 40px;
-     font-size: 17px; 
-}
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </div> 
 
-ul li a {
-    text-decoration: none;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    transition: .2s ease;
-}
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('regTitle').value;
+            const genre = document.getElementById('litGenre').value;
+            const summary = document.getElementById('regSummary').value;
 
-ul li a:hover {
-    color: #703a0d;
-}
+            try {
+                const response = await fetch('/api/publish', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, genre, summary })
+                });
 
+                const data = await response.json();
 
-.wrapper {
-    width: 420px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .2);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    color: #422214;
-    border-radius: 10px;
-    padding: 30px 40px;
-}
-
-.wrapper h1 {
-    font-size: 36px;
-    text-align: center;
-}
-
-.wrapper .input-box {
-    position: relative;
-    width: 100%; 
-    height: 50px;
-    margin: 30px 0;
-}
-
-.input-box input {
-    width: 100%;
-    height: 100%;
-    background: #d89664;
-    border: none;
-    outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
-    border-radius: 40px;
-    font-size: 16px;
-    color: #613a1b;
-    padding: 0 45px 0 25px; 
-}
-
-
-.input-box select {
-    width: 100%;
-    height: 100%;
-    background: #d89664;
-    border: none;
-    outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
-    border-radius: 40px;
-    font-size: 16px;
-    color: #613a1b;
-    padding: 0 45px 0 50px; 
-    cursor: pointer;
-    caret-color: #713519;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.input-box .left-icon {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #623321;
-}
-
-.input-box  .right-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 22px;
-    color: #623321;
-    pointer-events: none;
-}
-
-.input-box input::placeholder {
-    color: #623321;
-}
-
-.input-box i {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #623321;
-}
-
-.wrapper .remember-forgot {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    margin: -15px 0 15px;
-}
-
-.remember-forgot label input {
-    accent-color: #895939;
-    margin-right: 3px;
-}
-
-.remember-forgot a {
-    color: #d89664;
-    text-decoration: none;
-}
-
-.remember-forgot a:hover {
-    text-decoration: underline;
-}
-
-.wrapper .btn {
-    width: 100%;
-    height: 45px;
-    background: #f89c4d;
-    border: none;
-    outline: none;
-    border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-    cursor: pointer;
-    font-size: 16px;
-    color: #422214;
-    font-weight: 600;
-    justify-content: space-between;
-    transition: background 0.1s ease;
-
-}
-
-.wrapper .btn:hover {
-    background: #e08332;
-}
-
-.register-link {
-    font-size: 14.5px;
-    text-align: center;
-    margin: 20px 0 15px;
-}
-
-.register-link p a {
-    color: #b47348;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.register-link p a:hover {
-    text-decoration: underline;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-    -webkit-text-fill-color: #45260c; 
-    box-shadow: 0 0 0px 1000px #ffc99f inset; 
-    transition: background-color 5000s ease-in-out 0s;
-}
-
-.wrapper .summary-box {
-    height: 120px; 
-    margin: 30px 0;
-}
-
-.summary-box textarea {
-    width: 100%;
-    height: 100%;
-    background: #d89664;
-    border: none;
-    outline: none;
-    border: 2px solid rgba(255, 255, 255, .2);
-    border-radius: 20px; 
-    font-size: 16px;
-    color: #613a1b;
-    padding: 15px 45px 15px 25px; 
-    resize: none; 
-}
-
-.summary-box i {
-    top: 25px;
-    transform: translateY(-50%);
-}
-
-.file-upload-box {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 30px 0;
-}
-
-::file-selector-button {
-     border: none;
-     outline: none;
-     color: #ffffff;
-     background: #793a0a;
-    -webkit-text-fill-color: #45260c; 
-    box-shadow: 0 0 0px 1000px #ffc99f inset; 
-    transition: background-color 5000s ease-in-out 0s;
-}
+                if (response.ok) {
+                    alert(`"${title}" has been successfully added to your shelf!`);
+                    this.reset(); 
+                } else {
+                    alert(`Failed to publish: ${data.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error("Network Error:", error);
+                alert("Could not connect to the database server. Make sure your backend is running!");
+            }
+        });
+    </script>
+</body>
+</html>
