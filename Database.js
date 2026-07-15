@@ -60,7 +60,6 @@ async function createLiterature(title, writer_id, genre, summary, pdf_url) {
 }
 
 
-
 app.post('/api/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -114,6 +113,7 @@ app.post('/api/publish', async (req, res) => {
 
 app.get('/api/literature', async (req, res) => {
     try {
+        // Fixed syntax error and full group by issues
         const query = `
             SELECT 
                 l.id, 
@@ -127,7 +127,7 @@ app.get('/api/literature', async (req, res) => {
             FROM literature l
             JOIN users u ON l.writer_id = u.id
             LEFT JOIN votes v ON l.id = v.literature_id
-            GROUP BY l.id
+            GROUP BY l.id, l.title, l.Summary, l.Genre, l.pdf_url, u.username
             ORDER BY l.created_at DESC
         `;
         const [rows] = await pool.execute(query);
