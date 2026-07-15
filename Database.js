@@ -12,10 +12,8 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json())
 
-// Serves static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Interface Routing Paths
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -28,6 +26,10 @@ app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'Index3.html'));
 });
 
+app.get('/browse', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'browse.html'));
+});
+
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -35,7 +37,6 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE,
 }).promise();
 
-// --- SQL HELPER FUNCTIONS ---
 
 async function createUser(username, email, password_hash) {
     const [result] = await pool.execute(
@@ -50,18 +51,15 @@ async function getUserByUsername(username) {
     return rows[0];
 }
 
-/* NEW: Helper function to insert newly published literature */
 async function createLiterature(title, writer_id, genre, summary, pdf_url) {
-    const publication_date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     const [result] = await pool.execute(
-        'INSERT INTO literature (title, writer_id, Genre, publication_date, Summary, pdf_url) VALUES (?, ?, ?, ?, ?, ?)',
-        [title, writer_id, genre, publication_date, summary, pdf_url]
+        'INSERT INTO literature (title, writer_id, Genre, Summary, pdf_url) VALUES (?, ?, ?, ?, ?)',
+        [title, writer_id, genre, summary, pdf_url]
     );
     return result.insertId;
 }
 
 
-// --- API ROUTING ENDPOINTS ---
 
 app.post('/api/register', async (req, res) => {
     try {
@@ -95,7 +93,6 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-/* NEW: API Endpoint to handle book publishing */
 app.post('/api/publish', async (req, res) => {
     try {
         const { title, genre, summary } = req.body;
@@ -112,6 +109,66 @@ app.post('/api/publish', async (req, res) => {
     } catch (error) {
         console.error("Database Insert Error: ", error);
         res.status(500).json({ error: "Could not publish literature to the database." });
+    }
+});
+
+app.get('/api/literature', async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                l.id, 
+                l.title, 
+                l.Summary AS summary, 
+                l.Genre AS genre,
+                l.pdf_url, 
+                u.username AS author,
+                COUNT(CASE WHEN v.vote_type = 'like' THEN 1 END) AS likes,
+                COUNT(CASE WHEN v.vote_type = 'dislike' THEN 1 END) AS dislikes
+            FROM literature l
+            JOIN users u ON l.writer_id = u.id
+            LEFT JOIN votes v ON l.id = v.literature_id
+            GROUP BY l.id
+            ORDER BY l.created_at DESC
+        `;
+        const [rows] = await pool.execute(query);
+        res.json(rows);
+    } catch (error) {
+        console.error("Database Fetch Error: ", error);
+        res.status(500).json({ error: "Could not fetch literature feed." });
+    }
+});
+
+app.post('/api/vote', async (req, res) => {
+    try {
+        const { user_id, literature_id, vote_type } = req.body;
+
+        if (!user_id || !literature_id || !['like', 'dislike'].includes(vote_type)) {
+            return res.status(400).json({ error: "Invalid parameters" });
+        }
+
+        const voteQuery = `
+            INSERT INTO votes (users_id, literature_id, vote_type) 
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
+        `;
+        await pool.execute(voteQuery, [user_id, literature_id, vote_type]);
+
+        const countQuery = `
+            SELECT 
+                COUNT(CASE WHEN vote_type = 'like' THEN 1 END) AS likes,
+                COUNT(CASE WHEN vote_type = 'dislike' THEN 1 END) AS dislikes
+            FROM votes 
+            WHERE literature_id = ?
+        `;
+        const [counts] = await pool.execute(countQuery, [literature_id]);
+
+        res.json({ 
+            likes: counts[0].likes, 
+            dislikes: counts[0].dislikes 
+        });
+    } catch (error) {
+        console.error("Database Vote Error: ", error);
+        res.status(500).json({ error: "Could not cast vote." });
     }
 });
 
