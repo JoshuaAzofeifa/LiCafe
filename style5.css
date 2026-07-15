@@ -19,7 +19,7 @@ body {
     overflow: hidden; 
 }
 
-/* Navigation Menu */
+
 ul {
     position: absolute;
     top: 0;
@@ -48,7 +48,7 @@ ul li a:hover {
     color: #703a0d;
 }
 
-/* Glassmorphism Wrapper */
+
 .wrapper {
     width: 420px;
     background: transparent;
@@ -66,7 +66,7 @@ ul li a:hover {
     text-align: center;
 }
 
-/* Input Containers */
+
 .wrapper .input-box {
     position: relative;
     width: 100%; 
@@ -74,7 +74,7 @@ ul li a:hover {
     margin: 30px 0;
 }
 
-/* Global Text Inputs */
+
 .input-box input {
     width: 100%;
     height: 100%;
@@ -88,15 +88,15 @@ ul li a:hover {
     padding: 0 45px 0 25px; 
 }
 
-/* Custom File Input Spacing */
+
 .input-box input[type="file"] {
-    padding: 0 45px 0 10px; /* Shift text slightly left to accommodate the button */
+    padding: 0 45px 0 10px; 
     display: flex;
     align-items: center;
     cursor: pointer;
 }
 
-/* Dropdown/Select Styling */
+
 .input-box select {
     width: 100%;
     height: 100%;
@@ -115,7 +115,7 @@ ul li a:hover {
     appearance: none;
 }
 
-/* Icon Alignments */
+
 .input-box .left-icon {
     position: absolute;
     left: 20px;
@@ -146,10 +146,10 @@ ul li a:hover {
     transform: translateY(-50%);
     font-size: 20px;
     color: #623321;
-    pointer-events: none; /* Make sure icons don't block clicks */
+    pointer-events: none; 
 }
 
-/* Remember Me & Forgot Password */
+
 .wrapper .remember-forgot {
     display: flex;
     justify-content: space-between;
@@ -171,7 +171,7 @@ ul li a:hover {
     text-decoration: underline;
 }
 
-/* Main Form Button */
+
 .wrapper .btn {
     width: 100%;
     height: 45px;
@@ -192,7 +192,7 @@ ul li a:hover {
     background: #e08332;
 }
 
-/* Register / Sign-up Link */
+
 .register-link {
     font-size: 14.5px;
     text-align: center;
@@ -209,7 +209,7 @@ ul li a:hover {
     text-decoration: underline;
 }
 
-/* Autofill Overrides */
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus,
@@ -221,7 +221,7 @@ select:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Textarea Summary Box */
+
 .wrapper .summary-box {
     height: 120px; 
     margin: 30px 0;
@@ -246,7 +246,7 @@ select:-webkit-autofill:focus {
     transform: translateY(-50%);
 }
 
-/* Custom File Selector Button Styling */
+
 input[type="file"]::file-selector-button {
     border: none;
     outline: none;
@@ -261,7 +261,7 @@ input[type="file"]::file-selector-button {
     transition: background 0.2s ease, transform 0.1s ease;
 }
 
-/* Hover state for the file selector button */
+
 input[type="file"]::file-selector-button:hover {
     background: #5d2b06;
     transform: scale(1.02);
