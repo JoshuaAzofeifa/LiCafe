@@ -147,7 +147,7 @@ app.post('/api/vote', async (req, res) => {
         }
 
         const voteQuery = `
-            INSERT INTO votes (users_id, literature_id, vote_type) 
+            INSERT INTO votes (user_id, literature_id, vote_type) 
             VALUES (?, ?, ?)
             ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
         `;
@@ -163,8 +163,8 @@ app.post('/api/vote', async (req, res) => {
         const [counts] = await pool.execute(countQuery, [literature_id]);
 
         res.json({ 
-            likes: counts[0].likes, 
-            dislikes: counts[0].dislikes 
+            likes: (counts[0] && counts[0].likes) || 0, 
+            dislikes: (counts[0] && counts[0].dislikes) || 0 
         });
     } catch (error) {
         console.error("Database Vote Error: ", error);
