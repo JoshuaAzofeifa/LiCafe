@@ -1,8 +1,7 @@
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
 import express from 'express'
-import path from 'path'                  
-import { fileURLToPath } from 'url'
+import cors from 'cors'
 import bcrypt from 'bcrypt'
 import session from 'express-session'
 import MySQLStore from 'express-mysql-session'
@@ -10,13 +9,17 @@ import MySQLStore from 'express-mysql-session'
 dotenv.config()
 
 const app = express()
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+
+
+app.use(cors({
+    origin: ['https://licafe.publicvm.com', 'http://licafe.publicvm.com'],
+    credentials: true 
+}))
 
 app.use(express.json())
 
-// If running in production behind Nginx/HTTPS, trust the proxy headers
-if (process.env.NODE_ENV === 'production') {
+
+if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
     app.set('trust proxy', 1)
 }
 
@@ -40,29 +43,14 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production', // true over HTTPS, false over HTTP
+        secure: true, 
         httpOnly: true,
+        sameSite: 'none', 
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
 
-app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
-
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index2.html'))
-})
-
-app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index3.html'))
-})
-
-app.get('/browse', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index6.html'))
-})
 
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.userId) {
@@ -203,175 +191,4 @@ app.post('/api/login', async (req, res) => {
         })
     } catch (error) {
         console.error('Login error:', error)
-        res.status(500).json({ error: "Login failed" })
-    }
-})
-
-app.post('/api/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ error: "Could not logout" })
-        }
-        res.json({ message: "Logged out successfully" })
-    })
-})
-
-app.get('/api/user', isAuthenticated, async (req, res) => {
-    try {
-        const user = await getUserById(req.session.userId)
-        if (!user) {
-            return res.status(404).json({ error: "User not found" })
-        }
-        res.json(user)
-    } catch (error) {
-        console.error('Error fetching user:', error)
-        res.status(500).json({ error: "Could not fetch user" })
-    }
-})
-
-app.post('/api/publish', isAuthenticated, async (req, res) => {
-    try {
-        const { title, genre, summary } = req.body
-        const writer_id = req.session.userId
-
-        if (!validateInput(title, 'string', 1, 255)) {
-            return res.status(400).json({ error: "Title is required (max 255 characters)" })
-        }
-        if (!validateInput(genre, 'string', 1, 100)) {
-            return res.status(400).json({ error: "Genre is required (max 100 characters)" })
-        }
-        if (!validateInput(summary, 'string', 1, 1000)) {
-            return res.status(400).json({ error: "Summary is required (max 1000 characters)" })
-        }
-
-        const placeholder_pdf = "uploads/default.pdf"
-
-        const litId = await createLiterature(title, writer_id, genre, summary, placeholder_pdf)
-        
-        res.status(201).json({ 
-            message: "Literature added to the shelf successfully!", 
-            literatureId: litId 
-        })
-    } catch (error) {
-        console.error("Database Insert Error:", error)
-        res.status(500).json({ error: "Could not publish literature to the database." })
-    }
-})
-
-app.get('/api/literature', async (req, res) => {
-    try {
-        const query = `
-            SELECT 
-                l.id, 
-                l.title, 
-                l.Summary AS summary, 
-                l.Genre AS genre,
-                l.pdf_url, 
-                u.username AS author,
-                u.id AS author_id,
-                COUNT(CASE WHEN v.vote_type = 'like' THEN 1 END) AS likes,
-                COUNT(CASE WHEN v.vote_type = 'dislike' THEN 1 END) AS dislikes
-            FROM literature l
-            JOIN users u ON l.writer_id = u.id
-            LEFT JOIN votes v ON l.id = v.literature_id
-            GROUP BY l.id, l.title, l.Summary, l.Genre, l.pdf_url, u.username, u.id
-            ORDER BY l.created_at DESC
-        `
-        const [rows] = await pool.execute(query)
-        res.json(rows)
-    } catch (error) {
-        console.error("Database Fetch Error:", error)
-        res.status(500).json({ error: "Could not fetch literature feed." })
-    }
-})
-
-app.get('/api/literature/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-
-        if (!Number.isInteger(parseInt(id))) {
-            return res.status(400).json({ error: "Invalid literature ID" })
-        }
-
-        const query = `
-            SELECT 
-                l.id, 
-                l.title, 
-                l.Summary AS summary, 
-                l.Genre AS genre,
-                l.pdf_url, 
-                u.username AS author,
-                u.id AS author_id,
-                COUNT(CASE WHEN v.vote_type = 'like' THEN 1 END) AS likes,
-                COUNT(CASE WHEN v.vote_type = 'dislike' THEN 1 END) AS dislikes
-            FROM literature l
-            JOIN users u ON l.writer_id = u.id
-            LEFT JOIN votes v ON l.id = v.literature_id
-            WHERE l.id = ?
-            GROUP BY l.id, l.title, l.Summary, l.Genre, l.pdf_url, u.username, u.id
-        `
-        const [rows] = await pool.execute(query, [id])
-        
-        if (rows.length === 0) {
-            return res.status(404).json({ error: "Literature not found" })
-        }
-
-        res.json(rows[0])
-    } catch (error) {
-        console.error("Database Fetch Error:", error)
-        res.status(500).json({ error: "Could not fetch literature." })
-    }
-})
-
-app.post('/api/vote', isAuthenticated, async (req, res) => {
-    try {
-        const { literature_id, vote_type } = req.body
-        const user_id = req.session.userId
-
-        if (!Number.isInteger(parseInt(literature_id))) {
-            return res.status(400).json({ error: "Invalid literature ID" })
-        }
-        if (!['like', 'dislike'].includes(vote_type)) {
-            return res.status(400).json({ error: "Invalid vote type" })
-        }
-
-        const voteQuery = `
-            INSERT INTO votes (users_id, literature_id, vote_type) 
-            VALUES (?, ?, ?)
-            ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
-        `
-        await pool.execute(voteQuery, [user_id, literature_id, vote_type])
-
-        const countQuery = `
-            SELECT 
-                COUNT(CASE WHEN vote_type = 'like' THEN 1 END) AS likes,
-                COUNT(CASE WHEN vote_type = 'dislike' THEN 1 END) AS dislikes
-            FROM votes 
-            WHERE literature_id = ?
-        `
-        const [counts] = await pool.execute(countQuery, [literature_id])
-
-        res.json({ 
-            message: "Vote recorded successfully",
-            likes: (counts[0] && counts[0].likes) || 0, 
-            dislikes: (counts[0] && counts[0].dislikes) || 0 
-        })
-    } catch (error) {
-        console.error("Database Vote Error:", error)
-        res.status(500).json({ error: "Could not cast vote." })
-    }
-})
-
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'Server is running' })
-})
-
-app.use((err, req, res, next) => {
-    console.error('Unhandled error:', err)
-    res.status(500).json({ error: "Internal server error" })
-})
-
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-    console.log(`🚀 Server listening at http://localhost:${PORT}`)
-})
+        res.status(500).json({ error: "Login
