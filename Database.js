@@ -10,8 +10,14 @@ dotenv.config()
 
 const app = express()
 
+
 app.use(cors({
-    origin: ['https://licafe.publicvm.com', 'http://licafe.publicvm.com'],
+    origin: [
+        'https://licafe.publicvm.com', 
+        'http://licafe.publicvm.com',
+        'https://www.licafe.publicvm.com', 
+        'http://www.licafe.publicvm.com'
+    ],
     credentials: true
 }))
 
