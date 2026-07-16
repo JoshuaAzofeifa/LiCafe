@@ -15,6 +15,11 @@ const __dirname = path.dirname(__filename)
 
 app.use(express.json())
 
+// If running in production behind Nginx/HTTPS, trust the proxy headers
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1)
+}
+
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -35,7 +40,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production', // true over HTTPS, false over HTTP
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24
     }
