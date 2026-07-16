@@ -36,8 +36,7 @@
     </div>
 
     <script>
-     
-        const API_BASE_URL = 'https://your-backend-app.onrender.com'; 
+        const API_BASE_URL = 'https://licafe.onrender.com'; 
 
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -47,18 +46,22 @@
             const password = document.getElementById('regPassword').value;
 
             try {
-             
                 const response = await fetch(`${API_BASE_URL}/api/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        username, 
+                        email, 
+                        password,
+                        confirmPassword: password // Keeps the backend validation happy
+                    })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
                     alert("Account created successfully!");
-                    
                     window.location.href = 'index2.html';
                 } else {
                     alert("Error: " + data.error);
