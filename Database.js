@@ -89,7 +89,7 @@ async function getUserByUsername(username) {
 async function getUserById(userId) {
     try {
         const [rows] = await pool.execute(
-            'SELECT id, username, email, role FROM users WHERE id = ?', 
+            'SELECT id, username, email FROM users WHERE id = ?', 
             [userId]
         )
         return rows[0]
@@ -191,11 +191,10 @@ app.post('/api/login', async (req, res) => {
 
         req.session.userId = user.id
         req.session.username = user.username
-        req.session.role = user.role
 
         res.json({ 
             message: "Login successful", 
-            user: { id: user.id, username: user.username, role: user.role } 
+            user: { id: user.id, username: user.username } 
         })
     } catch (error) {
         console.error('Login error:', error)
