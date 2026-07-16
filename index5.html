@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <form id="registerForm" enctype="multipart/form-data">
+        <form id="registerForm">
             <h1>Add to the shelf</h1>
             
             <div class="input-box">
@@ -55,8 +55,7 @@
     </div> 
 
     <script>
-
-        const API_BASE_URL = 'http://www.licafe.publicvm.com';
+        const API_BASE_URL = 'https://licafe.onrender.com';
 
         document.getElementById('registerForm').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -71,6 +70,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    credentials: 'include',
                     body: JSON.stringify({ title, genre, summary })
                 });
 
