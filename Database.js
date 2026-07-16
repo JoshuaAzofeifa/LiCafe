@@ -19,15 +19,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'Index2.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index2.html'));
 });
 
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'Index3.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index3.html'));
 });
 
 app.get('/browse', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'browse.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index6.html'));
 });
 
 const pool = mysql.createPool({
@@ -113,7 +113,7 @@ app.post('/api/publish', async (req, res) => {
 
 app.get('/api/literature', async (req, res) => {
     try {
-        // Fixed syntax error and full group by issues
+       
         const query = `
             SELECT 
                 l.id, 
