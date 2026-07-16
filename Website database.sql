@@ -1,32 +1,36 @@
-CREATE DATABASE IF NOT EXISTS my_databaseplatform;
-USE my_databaseplatform;
-
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE, 
-    email VARCHAR(50) NOT NULL UNIQUE, 
-    password_hash VARCHAR(255) NOT NULL
+    email VARCHAR(100) NOT NULL UNIQUE, 
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS sessions (
+    session_id varchar(128) COLLATE utf8mb4_bin NOT NULL,
+    expires int(11) unsigned NOT NULL,
+    data mediumtext COLLATE utf8mb4_bin,
+    PRIMARY KEY (session_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE IF NOT EXISTS literature (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(60) NOT NULL,
+    title VARCHAR(255) NOT NULL, 
     writer_id INT,
-    Genre ENUM('Poetry', 'Drama', 'Novel', 'Short story', 'Essay', 'Fiction', 'Theatre') NOT NULL,
-    Summary VARCHAR(400) NOT NULL, 
-    pdf_url VARCHAR(512) NOT NULL,
+    Genre VARCHAR(100) NOT NULL, 
+    Summary TEXT NOT NULL, 
+    pdf_url VARCHAR(512) DEFAULT 'uploads/default.pdf', 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (writer_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS votes ( 
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    users_id INT,
-    literature_id INT, 
+    users_id INT NOT NULL,
+    literature_id INT NOT NULL, 
     vote_type ENUM('like', 'dislike') NOT NULL,
+    PRIMARY KEY (users_id, literature_id), 
     FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (literature_id) REFERENCES literature(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_reader_vote (users_id, literature_id)
+    FOREIGN KEY (literature_id) REFERENCES literature(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS badges (
