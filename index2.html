@@ -36,8 +36,7 @@
     </div>
 
     <script>
-
-        const API_BASE_URL = 'https://your-backend-app.onrender.com';
+        const API_BASE_URL = 'https://licafe.onrender.com';
 
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
             event.preventDefault(); 
@@ -46,10 +45,10 @@
             const password = document.getElementById('loginPassword').value;
 
             try {
-               
                 const response = await fetch(`${API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     body: JSON.stringify({ username, password })
                 });
 
@@ -57,7 +56,6 @@
 
                 if (response.ok) {
                     alert("Welcome back, " + data.user.username + "!");
-                 
                     window.location.href = 'index.html'; 
                 } else {
                     alert("Error: " + data.error);
