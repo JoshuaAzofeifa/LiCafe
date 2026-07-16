@@ -15,7 +15,6 @@ const __dirname = path.dirname(__filename)
 
 app.use(express.json())
 
-// Database Pool
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -26,11 +25,9 @@ const pool = mysql.createPool({
     queueLimit: 0
 }).promise()
 
-// Session Store
 const SessionStore = MySQLStore(session)
-const sessionStore = new SessionStore({}, pool.getConnection())
+const sessionStore = new SessionStore({}, pool)
 
-// Session Middleware
 app.use(session({
     key: 'session_id',
     secret: process.env.SESSION_SECRET || 'your_secret_key_change_me',
@@ -40,11 +37,10 @@ app.use(session({
     cookie: { 
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 // 24 hours
+        maxAge: 1000 * 60 * 60 * 24
     }
 }))
 
-// Static Files & Routes
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', (req, res) => {
@@ -63,7 +59,6 @@ app.get('/browse', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index6.html'))
 })
 
-// Authentication Middleware
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.userId) {
         next()
@@ -72,14 +67,11 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-// Input Validation Helper
 function validateInput(input, type = 'string', minLength = 1, maxLength = 255) {
     if (typeof input !== 'string') return false
     if (input.trim().length < minLength || input.trim().length > maxLength) return false
     return true
 }
-
-// Database Functions
 
 async function getUserByUsername(username) {
     try {
@@ -136,14 +128,10 @@ async function createLiterature(title, writer_id, genre, summary, pdf_url) {
     }
 }
 
-// API Routes
-
-// Register Route
 app.post('/api/register', async (req, res) => {
     try {
         const { username, email, password, confirmPassword } = req.body
 
-        // Validation
         if (!validateInput(username, 'string', 3, 50)) {
             return res.status(400).json({ error: "Username must be 3-50 characters" })
         }
@@ -157,19 +145,15 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({ error: "Passwords do not match" })
         }
 
-        // Check if user exists
         const existingUser = await getUserByUsername(username)
         if (existingUser) {
             return res.status(409).json({ error: "Username already exists" })
         }
 
-        // Hash password with bcrypt
         const password_hash = await bcrypt.hash(password, 10)
 
-        // Create user
         const userId = await createUser(username, email, password_hash)
 
-        // Set session
         req.session.userId = userId
         req.session.username = username
 
@@ -184,12 +168,10 @@ app.post('/api/register', async (req, res) => {
     }
 })
 
-// Login Route
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body
 
-        // Validation
         if (!validateInput(username, 'string', 1, 50)) {
             return res.status(400).json({ error: "Invalid username" })
         }
@@ -197,19 +179,16 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ error: "Invalid password" })
         }
 
-        // Get user
         const user = await getUserByUsername(username)
         if (!user) {
             return res.status(401).json({ error: "Invalid username or password" })
         }
 
-        // Compare password with bcrypt
         const isValidPassword = await bcrypt.compare(password, user.password_hash)
         if (!isValidPassword) {
             return res.status(401).json({ error: "Invalid username or password" })
         }
 
-        // Set session
         req.session.userId = user.id
         req.session.username = user.username
         req.session.role = user.role
@@ -224,7 +203,6 @@ app.post('/api/login', async (req, res) => {
     }
 })
 
-// Logout Route
 app.post('/api/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -234,7 +212,6 @@ app.post('/api/logout', (req, res) => {
     })
 })
 
-// Get Current User Route
 app.get('/api/user', isAuthenticated, async (req, res) => {
     try {
         const user = await getUserById(req.session.userId)
@@ -248,13 +225,11 @@ app.get('/api/user', isAuthenticated, async (req, res) => {
     }
 })
 
-// Publish Literature Route
 app.post('/api/publish', isAuthenticated, async (req, res) => {
     try {
         const { title, genre, summary } = req.body
         const writer_id = req.session.userId
 
-        // Validation
         if (!validateInput(title, 'string', 1, 255)) {
             return res.status(400).json({ error: "Title is required (max 255 characters)" })
         }
@@ -279,7 +254,6 @@ app.post('/api/publish', isAuthenticated, async (req, res) => {
     }
 })
 
-// Get All Literature Route
 app.get('/api/literature', async (req, res) => {
     try {
         const query = `
@@ -307,7 +281,6 @@ app.get('/api/literature', async (req, res) => {
     }
 })
 
-// Get Literature by ID Route
 app.get('/api/literature/:id', async (req, res) => {
     try {
         const { id } = req.params
@@ -346,13 +319,11 @@ app.get('/api/literature/:id', async (req, res) => {
     }
 })
 
-// Vote Route
 app.post('/api/vote', isAuthenticated, async (req, res) => {
     try {
         const { literature_id, vote_type } = req.body
         const user_id = req.session.userId
 
-        // Validation
         if (!Number.isInteger(parseInt(literature_id))) {
             return res.status(400).json({ error: "Invalid literature ID" })
         }
@@ -387,12 +358,10 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
     }
 })
 
-// Health Check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'Server is running' })
 })
 
-// Error Handling Middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err)
     res.status(500).json({ error: "Internal server error" })
