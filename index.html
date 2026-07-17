@@ -39,5 +39,22 @@
             <source src="Music.mp3" type="audio/mpeg">
         </audio>
     </div> 
+
+    <script>
+        const API_BASE_URL = 'https://licafe.onrender.com';
+
+        async function checkServerHealth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/health`);
+                if (!response.ok) {
+                    console.warn("Backend server responded with an error status.");
+                }
+            } catch (error) {
+                console.error("Could not establish a connection to the backend engine:", error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', checkServerHealth);
+    </script>
 </body>
 </html>
