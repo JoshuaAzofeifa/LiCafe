@@ -10,6 +10,7 @@ dotenv.config()
 
 const app = express()
 
+// Updated CORS to fully support cookie authorization across different domains
 app.use(cors({
     origin: [
         'https://licafe.publicvm.com', 
@@ -17,7 +18,9 @@ app.use(cors({
         'https://www.licafe.publicvm.com', 
         'http://www.licafe.publicvm.com'
     ],
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
 app.use(express.json())
@@ -56,7 +59,7 @@ app.use(session({
     cookie: { 
         secure: true,
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: 'none', // Crucial for cross-domain cookie sending
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
