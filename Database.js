@@ -26,17 +26,22 @@ if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
     app.set('trust proxy', 1)
 }
 
+// 1. Create a standard callback pool (which express-mysql-session needs)
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DB, // <-- FIXED HERE: Changed from MYSQL_DATABASE to MYSQL_DB
+    database: process.env.MYSQL_DB,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
-}).promise()
+})
+
+// 2. Create a promise-wrapped version of the pool for your async/await queries
+const promisePool = pool.promise()
 
 const SessionStore = MySQLStore(session)
+// Pass the standard pool to the SessionStore
 const sessionStore = new SessionStore({}, pool)
 
 app.use(session({
@@ -69,7 +74,7 @@ function validateInput(input, type = 'string', minLength = 1, maxLength = 255) {
 
 async function getUserByUsername(username) {
     try {
-        const [rows] = await pool.execute(
+        const [rows] = await promisePool.execute(
             'SELECT * FROM users WHERE username = ?', 
             [username]
         )
@@ -82,7 +87,7 @@ async function getUserByUsername(username) {
 
 async function getUserById(userId) {
     try {
-        const [rows] = await pool.execute(
+        const [rows] = await promisePool.execute(
             'SELECT id, username, email FROM users WHERE id = ?', 
             [userId]
         )
@@ -95,7 +100,7 @@ async function getUserById(userId) {
 
 async function createUser(username, email, password_hash) {
     try {
-        const [result] = await pool.execute(
+        const [result] = await promisePool.execute(
             'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)', 
             [username, email, password_hash]
         )
@@ -111,7 +116,7 @@ async function createUser(username, email, password_hash) {
 
 async function createLiterature(title, writer_id, genre, summary, pdf_url) {
     try {
-        const [result] = await pool.execute(
+        const [result] = await promisePool.execute(
             'INSERT INTO literature (title, writer_id, Genre, Summary, pdf_url, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
             [title, writer_id, genre, summary, pdf_url]
         )
@@ -266,7 +271,7 @@ app.get('/api/literature', async (req, res) => {
             GROUP BY l.id, l.title, l.Summary, l.Genre, l.pdf_url, u.username, u.id
             ORDER BY l.created_at DESC
         `
-        const [rows] = await pool.execute(query)
+        const [rows] = await promisePool.execute(query)
         res.json(rows)
     } catch (error) {
         console.error("Database Fetch Error:", error)
@@ -299,7 +304,7 @@ app.get('/api/literature/:id', async (req, res) => {
             WHERE l.id = ?
             GROUP BY l.id, l.title, l.Summary, l.Genre, l.pdf_url, u.username, u.id
         `
-        const [rows] = await pool.execute(query, [id])
+        const [rows] = await promisePool.execute(query, [id])
         
         if (rows.length === 0) {
             return res.status(404).json({ error: "Literature not found" })
@@ -329,7 +334,7 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
             VALUES (?, ?, ?)
             ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
         `
-        await pool.execute(voteQuery, [user_id, literature_id, vote_type])
+        await promisePool.execute(voteQuery, [user_id, literature_id, vote_type])
 
         const countQuery = `
             SELECT 
@@ -338,7 +343,7 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
             FROM votes 
             WHERE literature_id = ?
         `
-        const [counts] = await pool.execute(countQuery, [literature_id])
+        const [counts] = await promisePool.execute(countQuery, [literature_id])
 
         res.json({ 
             message: "Vote recorded successfully",
