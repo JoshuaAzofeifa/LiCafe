@@ -30,7 +30,7 @@ const pool = mysql.createPool({
     host: 'b5q446tg6em6npyl1wfq-mysql.services.clever-cloud.com',
     user: 'uh8ptfvbeyl7d5qr',
     password: 'IGer2g22EXKcDhrvsg4s',
-    database: 'b5q446tg6em6npy1lwfq',
+    database: 'b5q446tg6em6npyl1wfq',
     port: 3306,
     waitForConnections: true,
     connectionLimit: 10,
@@ -40,7 +40,12 @@ const pool = mysql.createPool({
 const promisePool = pool.promise()
 
 const SessionStore = MySQLStore(session)
-const sessionStore = new SessionStore({}, pool)
+const sessionStore = new SessionStore({
+    clearExpired: true,
+    checkExpirationInterval: 900000,
+    expiration: 86400000,
+    createDatabaseTable: true
+}, pool)
 
 app.use(session({
     key: 'session_id',
