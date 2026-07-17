@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
 const pool = mysql.createPool({
     host: 'b5q446tg6em6npy1lwfq-mysql.services.clever-cloud.com',
     user: 'ujv889puxu7g022r',
-    password: 'IGer2g22EXKcDhrvsg4s'
+    password: 'IGer2g22EXKcDhrvsg4s',
     database: 'b5q446tg6em6npy1lwfq',
     port: 3306,
     waitForConnections: true,
