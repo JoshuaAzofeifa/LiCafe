@@ -74,13 +74,19 @@
                     body: JSON.stringify({ title, genre, summary })
                 });
 
-                const data = await response.json();
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = null;
+                }
 
                 if (response.ok) {
                     alert(`"${title}" has been successfully added to your shelf!`);
                     this.reset(); 
                 } else {
-                    alert(`Failed to publish: ${data.error || 'Unknown error'}`);
+                    const errorMsg = data && data.error ? data.error : 'Unknown error occurred on the server.';
+                    alert(`Failed to publish: ${errorMsg}`);
                 }
             } catch (error) {
                 console.error("Network Error:", error);
@@ -89,4 +95,5 @@
         });
     </script>
 </body>
+</html>
 </html>
