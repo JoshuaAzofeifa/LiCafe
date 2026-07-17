@@ -26,11 +26,16 @@ if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
     app.set('trust proxy', 1)
 }
 
+const cleanEnvVar = (val) => {
+    if (!val) return undefined;
+    return val.replace(/\s+/g, '');
+};
+
 const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST ? process.env.MYSQL_HOST.trim() : undefined,
-    user: process.env.MYSQL_USER ? process.env.MYSQL_USER.trim() : undefined,
-    password: process.env.MYSQL_PASSWORD ? process.env.MYSQL_PASSWORD.trim() : undefined,
-    database: process.env.MYSQL_DB ? process.env.MYSQL_DB.trim() : undefined,
+    host: cleanEnvVar(process.env.MYSQL_HOST),
+    user: cleanEnvVar(process.env.MYSQL_USER),
+    password: cleanEnvVar(process.env.MYSQL_PASSWORD),
+    database: cleanEnvVar(process.env.MYSQL_DB),
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
