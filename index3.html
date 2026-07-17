@@ -36,7 +36,9 @@
     </div>
 
     <script>
-        const API_BASE_URL = 'https://licafe.onrender.com'; 
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000'
+            : 'https://licafe.onrender.com'; 
 
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -69,7 +71,6 @@
                     alert("Account created successfully!");
                     window.location.href = 'index2.html';
                 } else {
-        
                     const errorMsg = data && data.error ? data.error : "Registration failed. Check your server logs.";
                     alert("Error: " + errorMsg);
                 }
