@@ -26,22 +26,19 @@ if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
     app.set('trust proxy', 1)
 }
 
-// 1. Create a standard callback pool (which express-mysql-session needs)
 const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DB,
+    host: process.env.MYSQL_HOST ? process.env.MYSQL_HOST.trim() : undefined,
+    user: process.env.MYSQL_USER ? process.env.MYSQL_USER.trim() : undefined,
+    password: process.env.MYSQL_PASSWORD ? process.env.MYSQL_PASSWORD.trim() : undefined,
+    database: process.env.MYSQL_DB ? process.env.MYSQL_DB.trim() : undefined,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 })
 
-// 2. Create a promise-wrapped version of the pool for your async/await queries
 const promisePool = pool.promise()
 
 const SessionStore = MySQLStore(session)
-// Pass the standard pool to the SessionStore
 const sessionStore = new SessionStore({}, pool)
 
 app.use(session({
