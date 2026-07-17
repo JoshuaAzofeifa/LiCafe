@@ -26,16 +26,12 @@ if (process.env.NODE_ENV === 'production' || process.env.RENDER) {
     app.set('trust proxy', 1)
 }
 
-const cleanEnvVar = (val) => {
-    if (!val) return undefined;
-    return val.replace(/\s+/g, '');
-};
-
 const pool = mysql.createPool({
-    host: cleanEnvVar(process.env.MYSQL_HOST),
-    user: cleanEnvVar(process.env.MYSQL_USER),
-    password: cleanEnvVar(process.env.MYSQL_PASSWORD),
-    database: cleanEnvVar(process.env.MYSQL_DB),
+    host: 'b5q446tg6em6npy1lwfq-mysql.services.clever-cloud.com',
+    user: 'ujv889puxu7g022r',
+    password: process.env.MYSQL_PASSWORD ? process.env.MYSQL_PASSWORD.trim() : undefined,
+    database: 'b5q446tg6em6npy1lwfq',
+    port: 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
