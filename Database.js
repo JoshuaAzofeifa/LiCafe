@@ -10,7 +10,6 @@ dotenv.config()
 
 const app = express()
 
-
 app.use(cors({
     origin: [
         'https://licafe.publicvm.com', 
@@ -31,7 +30,7 @@ const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
+    database: process.env.MYSQL_DB, // <-- FIXED HERE: Changed from MYSQL_DATABASE to MYSQL_DB
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
