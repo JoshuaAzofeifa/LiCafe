@@ -54,21 +54,28 @@
                         username, 
                         email, 
                         password,
-                        confirmPassword: password // Keeps the backend validation happy
+                        confirmPassword: password 
                     })
                 });
 
-                const data = await response.json();
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = null;
+                }
 
                 if (response.ok) {
                     alert("Account created successfully!");
                     window.location.href = 'index2.html';
                 } else {
-                    alert("Error: " + data.error);
+        
+                    const errorMsg = data && data.error ? data.error : "Registration failed. Check your server logs.";
+                    alert("Error: " + errorMsg);
                 }
             } catch (error) {
                 console.error("Network error:", error);
-                alert("Something went wrong connecting to the server.");
+                alert("Could not reach the authentication server. Please try again in a few moments.");
             }
         });
     </script>
