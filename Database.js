@@ -5,15 +5,22 @@ import cors from 'cors'
 import bcrypt from 'bcrypt'
 import session from 'express-session'
 import MySQLStore from 'express-mysql-session'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
 dotenv.config()
 
 const app = express()
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Serves your frontend HTML/CSS/JS files directly from a "public" folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(cors({
     origin: [
-        'https://licafe-frontend.onrender.com', 
+        'https://licafe-frontend.onrender.com',
         'https://licafe.onrender.com',          
         'http://licafe.freedomain.one',
         'https://www.licafe.freedomain.one',
@@ -62,9 +69,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: true,       
+        secure: true,        
         httpOnly: true,
-        sameSite: 'none',   
+        sameSite: 'none',    
         maxAge: 1000 * 60 * 60 * 24 
     }
 }))
@@ -367,8 +374,9 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
     }
 })
 
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'Server is running' })
+// Handles SPA routing or direct index fallback
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
 app.use((err, req, res, next) => {
