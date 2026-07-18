@@ -15,7 +15,7 @@ body {
     max-width: 1200px;
     margin: 40px auto; 
     padding: 30px 20px;
-    background: url('download.jpg') no-repeat;
+    background: url('/download.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     border-radius: 16px;
