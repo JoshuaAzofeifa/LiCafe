@@ -45,11 +45,12 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: #623321;
+    border-color: #e5890a;
 }
 
 .genre-tag {
     background: #e5890a;
+    /* Text color changed to #623321 */
     color: #623321;
     font-size: 11px;
     padding: 4px 10px;
@@ -62,7 +63,7 @@ body {
 
 .card h3 {
     margin: 0 0 5px 0;
-    color: #e5890a;
+    color: #623321;
     font-size: 22px;
 }
 
