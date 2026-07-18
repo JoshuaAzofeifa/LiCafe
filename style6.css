@@ -32,7 +32,6 @@ body {
 }
 
 .card {
-    /* Using transparent background so the solid light beige of the container handles the background */
     background: transparent;
     border-radius: 12px;
     border: 1px solid rgba(98, 51, 33, 0.15);
@@ -48,8 +47,8 @@ body {
     border-color: #623321;
 }
 
+/* Fixes the genre tag text color */
 .genre-tag {
-    /* Light tint of your primary color for the tag background */
     background: rgba(98, 51, 33, 0.1);
     color: #623321;
     font-size: 11px;
@@ -61,12 +60,14 @@ body {
     margin-bottom: 12px;
 }
 
+/* Fixes the main card title */
 .card h3 {
     margin: 0 0 5px 0;
     color: #623321;
     font-size: 22px;
 }
 
+/* Fixes the 'By: Author | Genre' line text */
 .card .author {
     font-style: italic;
     font-size: 13px;
@@ -74,9 +75,9 @@ body {
     margin-bottom: 15px;
 }
 
+/* Fixes the main description / summary paragraph text */
 .card .summary {
-    /* Muted dark brown variant for clean readability on a light background */
-    color: #4a2c20;
+    color: #623321;
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 20px;
@@ -106,6 +107,9 @@ body {
 .vote-container {
     display: flex;
     gap: 10px;
+    align-items: center;
+    /* Fixes the text color of the score counters next to icons */
+    color: #623321; 
 }
 
 .vote-btn {
