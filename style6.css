@@ -14,7 +14,7 @@ body {
     min-height: 100vh;
     position: relative; 
     overflow-x: hidden;
-    background-color: #bc794f;
+    background: 'Gemini.png';
 }
 
 .scroll-container {
