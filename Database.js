@@ -7,6 +7,7 @@ import session from 'express-session'
 import MySQLStore from 'express-mysql-session'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import multer from 'multer'
 
 dotenv.config()
 
@@ -75,6 +76,17 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 
     }
 }))
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + path.extname(file.originalname))
+    }
+})
+const upload = multer({ storage: storage })
 
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.userId) {
@@ -241,7 +253,7 @@ app.get('/api/user', isAuthenticated, async (req, res) => {
     }
 })
 
-app.post('/api/publish', isAuthenticated, async (req, res) => {
+app.post('/api/publish', isAuthenticated, upload.single('pdfFile'), async (req, res) => {
     try {
         const { title, genre, summary } = req.body
         const writer_id = req.session.userId
@@ -256,9 +268,12 @@ app.post('/api/publish', isAuthenticated, async (req, res) => {
             return res.status(400).json({ error: "Summary is required (max 1000 characters)" })
         }
 
-        const placeholder_pdf = "uploads/default.pdf"
+        let pdf_url = "uploads/default.pdf"
+        if (req.file) {
+            pdf_url = `uploads/${req.file.filename}`
+        }
 
-        const litId = await createLiterature(title, writer_id, genre, summary, placeholder_pdf)
+        const litId = await createLiterature(title, writer_id, genre, summary, pdf_url)
         
         res.status(201).json({ 
             message: "Literature added to the shelf successfully!", 
