@@ -5,14 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Browse the Shelf</title>
-  <link rel="stylesheet" href="style6.css">
+  <link rel="stylesheet" href="/style6.css">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
 </head>
 <body>
 
   <div class="menu" style="margin: 20px;">
     <ul>
-      <li><a href="index.html" style="color: #fff; text-decoration: none; font-size: 18px; margin-right: 15px;">Home</a></li>
+      <li><a href="index2.html" style="color: #fff; text-decoration: none; font-size: 18px; margin-right: 15px;">Home</a></li>
       <li><a href="index5.html" style="color: #fff; text-decoration: none; font-size: 18px;">Publish</a></li>
     </ul>
   </div> 
@@ -22,7 +22,7 @@
   </main>
 
   <script>
-    const API_BASE_URL = 'https://licafe.onrender.com';
+    const API_BASE_URL = '';
 
     async function loadShelf() {
         const grid = document.getElementById('literatureGrid');
@@ -48,13 +48,16 @@
                     <h2>${item.title}</h2>
                     <h3>By: ${item.author} | Genre: ${item.genre}</h3>
                     <p>${item.summary}</p>
-                    <div class="votes" style="margin-top: 10px;">
-                        <button onclick="castVote(${item.id}, 'like')" style="background: none; border: none; color: #d89664; cursor: pointer; margin-right: 15px;">
-                            <i class="fas fa-thumbs-up"></i> <span id="likes-${item.id}">${item.likes || 0}</span>
-                        </button>
-                        <button onclick="castVote(${item.id}, 'dislike')" style="background: none; border: none; color: #613a1b; cursor: pointer;">
-                            <i class="fas fa-thumbs-down"></i> <span id="dislikes-${item.id}">${item.dislikes || 0}</span>
-                        </button>
+                    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <div class="votes">
+                            <button onclick="castVote(${item.id}, 'like')" style="background: none; border: none; color: #d89664; cursor: pointer; margin-right: 15px;">
+                                <i class="fas fa-thumbs-up"></i> <span id="likes-${item.id}">${item.likes || 0}</span>
+                            </button>
+                            <button onclick="castVote(${item.id}, 'dislike')" style="background: none; border: none; color: #613a1b; cursor: pointer;">
+                                <i class="fas fa-thumbs-down"></i> <span id="dislikes-${item.id}">${item.dislikes || 0}</span>
+                            </button>
+                        </div>
+                        <a href="/${item.pdf_url}" target="_blank" style="background: #e5890a; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 14px;">Read</a>
                     </div>
                 `;
                 grid.appendChild(card);
