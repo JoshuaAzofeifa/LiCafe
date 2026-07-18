@@ -373,17 +373,26 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
     }
 })
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index2.html'))
+})
+
 app.get('/:page', (req, res, next) => {
-    const requestedFile = req.params.page;
-    if (requestedFile.startsWith('api') || requestedFile.includes('.')) {
-        return next();
+    const ext = path.extname(req.params.page)
+    if (ext === '.html' || ext === '') {
+        const targetFile = ext === '' ? `${req.params.page}.html` : req.params.page
+        return res.sendFile(path.join(__dirname, targetFile), (err) => {
+            if (err) {
+                res.sendFile(path.join(__dirname, 'index2.html'))
+            }
+        })
     }
-    res.sendFile(path.join(__dirname, 'index2.html'));
-});
+    next()
+})
 
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'index2.html'));
-});
+    res.sendFile(path.join(__dirname, 'index2.html'))
+})
 
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err)
