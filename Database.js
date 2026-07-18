@@ -15,8 +15,8 @@ const app = express()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Serves your frontend HTML/CSS/JS files directly from a "public" folder
-app.use(express.static(path.join(__dirname, 'public')))
+// Serves your frontend HTML/CSS/JS files directly from the main root folder
+app.use(express.static(__dirname))
 
 app.use(cors({
     origin: [
@@ -375,7 +375,7 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
 })
 
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+    res.sendFile(path.join(__dirname, 'index2.html'))
 })
 
 app.use((err, req, res, next) => {
