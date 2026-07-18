@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 * {
     margin: 0;
@@ -26,8 +26,10 @@ body {
     width: 100%;
     margin: 40px auto; 
     padding: 30px 20px;
-    background: rgba(245, 241, 231, 0.9);
+    /* Solid, fully opaque light beige background */
+    background: #f9f6f0;
     border-radius: 16px;
+    /* Soft shadow to separate it cleanly from the background image */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
