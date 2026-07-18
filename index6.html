@@ -49,10 +49,10 @@
                     <h3>By: ${item.author} | Genre: ${item.genre}</h3>
                     <p>${item.summary}</p>
                     <div class="votes" style="margin-top: 10px;">
-                        <button onclick="castVote(${item.id}, 'like')" style="background: none; border: none; color: #00ff00; cursor: pointer; margin-right: 15px;">
+                        <button onclick="castVote(${item.id}, 'like')" style="background: none; border: none; color: #d89664; cursor: pointer; margin-right: 15px;">
                             <i class="fas fa-thumbs-up"></i> <span id="likes-${item.id}">${item.likes || 0}</span>
                         </button>
-                        <button onclick="castVote(${item.id}, 'dislike')" style="background: none; border: none; color: #ff0000; cursor: pointer;">
+                        <button onclick="castVote(${item.id}, 'dislike')" style="background: none; border: none; color: #613a1b; cursor: pointer;">
                             <i class="fas fa-thumbs-down"></i> <span id="dislikes-${item.id}">${item.dislikes || 0}</span>
                         </button>
                     </div>
