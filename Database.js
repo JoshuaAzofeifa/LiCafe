@@ -15,7 +15,6 @@ const app = express()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Serves your frontend HTML/CSS/JS files directly from the main root folder
 app.use(express.static(__dirname))
 
 app.use(cors({
@@ -374,9 +373,17 @@ app.post('/api/vote', isAuthenticated, async (req, res) => {
     }
 })
 
+app.get('/:page', (req, res, next) => {
+    const requestedFile = req.params.page;
+    if (requestedFile.startsWith('api') || requestedFile.includes('.')) {
+        return next();
+    }
+    res.sendFile(path.join(__dirname, 'index2.html'));
+});
+
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'index2.html'))
-})
+    res.sendFile(path.join(__dirname, 'index2.html'));
+});
 
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err)
