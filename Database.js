@@ -13,8 +13,8 @@ const app = express()
 
 app.use(cors({
     origin: [
-        'https://licafe.onrender.com',          
         'https://licafe-frontend.onrender.com', 
+        'https://licafe.onrender.com',          
         'http://licafe.freedomain.one',
         'https://www.licafe.freedomain.one',
         'http://www.licafe.freedomain.one',
@@ -64,8 +64,8 @@ app.use(session({
     cookie: { 
         secure: true,       
         httpOnly: true,
-        sameSite: 'none',    
-        maxAge: 1000 * 60 * 60 * 24
+        sameSite: 'none',   
+        maxAge: 1000 * 60 * 60 * 24 
     }
 }))
 
