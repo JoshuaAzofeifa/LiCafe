@@ -12,7 +12,7 @@ const app = express()
 
 app.use(cors({
     origin: [
-        'https://licafe.freedomain.one',
+        'https://licafe-frontend.onrender.com',
         'http://licafe.freedomain.one',
         'https://www.licafe.freedomain.one',
         'http://www.licafe.freedomain.one',
