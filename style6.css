@@ -1,6 +1,6 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #1a120b; /* Deep cozy brown */
+  background: url('/download.jpg') no-repeat;
   color: #f5f0bb;
   margin: 0;
   padding: 0;
@@ -12,11 +12,11 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
   max-width: 1200px;
-  margin: 40px auto; /* Adds a nice breathing room below your homepage navbar */
+  margin: 40px auto; 
   padding: 0 20px;
 }
 
-/* Individual Option Cards */
+
 .card {
   background: rgba(60, 42, 33, 0.85);
   border-radius: 12px;
@@ -29,7 +29,6 @@ body {
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-/* Subtle hover effect as you scroll through options */
 .card:hover {
   transform: translateY(-5px);
   border-color: #e5890a;
