@@ -12,6 +12,10 @@ const app = express()
 
 app.use(cors({
     origin: [
+        'https://licafe.freedomain.one',
+        'http://licafe.freedomain.one',
+        'https://www.licafe.freedomain.one',
+        'http://www.licafe.freedomain.one',
         'https://licafe.publicvm.com', 
         'http://licafe.publicvm.com',
         'https://www.licafe.publicvm.com', 
@@ -56,7 +60,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: true,        
+        secure: true,       
         httpOnly: true,
         sameSite: 'none',    
         maxAge: 1000 * 60 * 60 * 24 
