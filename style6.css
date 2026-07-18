@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600;700&display=swap');
 
 * {
     margin: 0;
@@ -14,7 +14,8 @@ body {
     min-height: 100vh;
     position: relative; 
     overflow-x: hidden;
-    background: 'Gemini.png';
+    background: url('Gemini.png') no-repeat center center fixed;
+    background-size: cover;
 }
 
 .scroll-container {
@@ -22,13 +23,14 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
     max-width: 1200px;
+    width: 100%;
     margin: 40px auto; 
     padding: 30px 20px;
     background: url('Shelf.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     border-radius: 16px;
-    box-shadow: inset 0 0 100px rgba(0,0,0,0.6);
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .card {
