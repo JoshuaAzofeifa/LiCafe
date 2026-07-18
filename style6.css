@@ -1,108 +1,109 @@
 body {
-  display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    position: relative; 
+    overflow-x: hidden;
+    background-color: #1a120b;
+}
+
+.scroll-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto; 
+    padding: 30px 20px;
     background: url('download.jpg') no-repeat;
     background-size: cover;
     background-position: center;
-    position: relative; 
-    overflow: hidden; 
+    border-radius: 16px;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.6);
 }
-
-
-.scroll-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 40px auto; 
-  padding: 0 20px;
-}
-
 
 .card {
-  background: rgba(60, 42, 33, 0.85);
-  border-radius: 12px;
-  border: 1px solid rgba(229, 137, 10, 0.3);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+    background: rgba(60, 42, 33, 0.85);
+    border-radius: 12px;
+    border: 1px solid rgba(229, 137, 10, 0.3);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  border-color: #e5890a;
+    transform: translateY(-5px);
+    border-color: #e5890a;
 }
 
 .genre-tag {
-  background: #e5890a;
-  color: #1a120b;
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  align-self: flex-start;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 12px;
+    background: #e5890a;
+    color: #1a120b;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    align-self: flex-start;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 12px;
 }
 
 .card h3 {
-  margin: 0 0 5px 0;
-  color: #e5890a;
-  font-size: 22px;
+    margin: 0 0 5px 0;
+    color: #e5890a;
+    font-size: 22px;
 }
 
 .card .author {
-  font-style: italic;
-  font-size: 13px;
-  color: #a4907c;
-  margin-bottom: 15px;
+    font-style: italic;
+    font-size: 13px;
+    color: #a4907c;
+    margin-bottom: 15px;
 }
 
 .card .summary {
-  color: #d5cca1;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 20px;
+    color: #d5cca1;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .card-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .read-btn {
-  background: #e5890a;
-  color: white;
-  text-decoration: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: bold;
+    background: #e5890a;
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .vote-container {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .vote-btn {
-  background: transparent;
-  border: 1px solid #a4907c;
-  color: #f5f0bb;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: all 0.2s;
+    background: transparent;
+    border: 1px solid #a4907c;
+    color: #f5f0bb;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .vote-btn:hover {
-  background: #e5890a;
-  color: white;
-  border-color: #e5890a;
+    background: #e5890a;
+    color: white;
+    border-color: #e5890a;
 }
