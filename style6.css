@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600;700&display=swap');
 
 * {
     margin: 0;
@@ -32,25 +32,25 @@ body {
 }
 
 .card {
-    background: rgba(60, 42, 33, 0.85);
+    /* Using transparent background so the solid light beige of the container handles the background */
+    background: transparent;
     border-radius: 12px;
-    border: 1px solid rgba(229, 137, 10, 0.3);
+    border: 1px solid rgba(98, 51, 33, 0.15);
     padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: #e5890a;
+    border-color: #623321;
 }
 
 .genre-tag {
-    background: #e5890a;
-    /* Text color changed to #623321 */
+    /* Light tint of your primary color for the tag background */
+    background: rgba(98, 51, 33, 0.1);
     color: #623321;
     font-size: 11px;
     padding: 4px 10px;
@@ -75,7 +75,8 @@ body {
 }
 
 .card .summary {
-    color: #d5cca1;
+    /* Muted dark brown variant for clean readability on a light background */
+    color: #4a2c20;
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 20px;
@@ -88,13 +89,18 @@ body {
 }
 
 .read-btn {
-    background: #e5890a;
+    background: #623321;
     color: white;
     text-decoration: none;
     padding: 10px 18px;
     border-radius: 6px;
     font-size: 14px;
     font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.read-btn:hover {
+    background: #4a2c20;
 }
 
 .vote-container {
@@ -104,8 +110,8 @@ body {
 
 .vote-btn {
     background: transparent;
-    border: 1px solid #a4907c;
-    color: #421d06;
+    border: 1px solid #623321;
+    color: #623321;
     border-radius: 6px;
     padding: 8px 12px;
     cursor: pointer;
@@ -113,7 +119,6 @@ body {
 }
 
 .vote-btn:hover {
-    background: #e5890a;
+    background: #623321;
     color: white;
-    border-color: #e5890a;
 }
