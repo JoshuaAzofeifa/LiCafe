@@ -1,12 +1,16 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: url('/download.jpg') no-repeat;
-  color: #f5f0bb;
-  margin: 0;
-  padding: 0;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/download.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative; 
+    overflow: hidden; 
 }
 
-/* The Scrollable Grid Container */
+
 .scroll-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
