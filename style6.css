@@ -47,7 +47,6 @@ body {
     border-color: #623321;
 }
 
-/* Fixes the genre tag text color */
 .genre-tag {
     background: rgba(98, 51, 33, 0.1);
     color: #623321;
@@ -60,14 +59,12 @@ body {
     margin-bottom: 12px;
 }
 
-/* Fixes the main card title */
 .card h3 {
     margin: 0 0 5px 0;
     color: #623321;
     font-size: 22px;
 }
 
-/* Fixes the 'By: Author | Genre' line text */
 .card .author {
     font-style: italic;
     font-size: 13px;
@@ -75,7 +72,6 @@ body {
     margin-bottom: 15px;
 }
 
-/* Fixes the main description / summary paragraph text */
 .card .summary {
     color: #623321;
     font-size: 14px;
