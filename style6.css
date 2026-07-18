@@ -26,10 +26,8 @@ body {
     width: 100%;
     margin: 40px auto; 
     padding: 30px 20px;
-    /* Solid, fully opaque light beige background */
     background: #f9f6f0;
     border-radius: 16px;
-    /* Soft shadow to separate it cleanly from the background image */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
@@ -47,12 +45,12 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: #e5890a;
+    border-color: #623321;
 }
 
 .genre-tag {
     background: #e5890a;
-    color: #1a120b;
+    color: #623321;
     font-size: 11px;
     padding: 4px 10px;
     border-radius: 12px;
@@ -71,7 +69,7 @@ body {
 .card .author {
     font-style: italic;
     font-size: 13px;
-    color: #a4907c;
+    color: #623321;
     margin-bottom: 15px;
 }
 
