@@ -42,15 +42,12 @@
             items.forEach(item => {
                 const card = document.createElement('div');
                 
-                /* FIX 1: Changed class to match your '.card' styling in your stylesheet */
                 card.className = 'card';
                 
-                /* FIX 2: Removed hardcoded inline styles and white text color injection */
                 card.style.margin = '15px 0'; 
                 
                 const cleanPdfUrl = item.pdf_url && item.pdf_url.startsWith('/') ? item.pdf_url : '/' + (item.pdf_url || '');
 
-                /* FIX 3: Placed title inside your requested <h3> wrapper to keep typography sizes consistent */
                 card.innerHTML = `
                     <h3>${item.title}</h3>
                     <p class="author">By: ${item.author} | Genre: ${item.genre}</p>
